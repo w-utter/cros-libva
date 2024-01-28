@@ -86,8 +86,6 @@ fn va_check(code: VAStatus) -> Result<(), VaError> {
 #[cfg(test)]
 mod tests {
     use std::io::Write;
-    use std::rc::Rc;
-
     use super::*;
 
     /// Returns a 32-bit CRC for the visible part of `image`, which must be in NV12 format.
@@ -251,7 +249,7 @@ mod tests {
             context.create_buffer(slice_data).unwrap(),
         ];
 
-        let mut picture = Picture::new(0, Rc::clone(&context), surfaces.remove(0));
+        let mut picture = Picture::new(0, &context, surfaces.remove(0));
         for buffer in buffers {
             picture.add_buffer(buffer);
         }
@@ -509,7 +507,7 @@ mod tests {
 
         let slice = context.create_buffer(slice).unwrap();
 
-        let mut picture = Picture::new(0, Rc::clone(&context), surface);
+        let mut picture = Picture::new(0, &context, surface);
         picture.add_buffer(pps);
         picture.add_buffer(sps);
         picture.add_buffer(slice);

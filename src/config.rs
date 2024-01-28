@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-use std::rc::Rc;
-
 use log::error;
 use thiserror::Error;
 
@@ -15,8 +13,8 @@ use crate::GenericValueError;
 use crate::VaError;
 
 /// A configuration for a given [`Display`].
-pub struct Config {
-    display: Rc<Display>,
+pub struct Config<'a> {
+    display: &'a Display,
     id: bindings::VAConfigID,
 }
 
@@ -28,11 +26,11 @@ pub enum QuerySurfaceAttributesError {
     GenericValueError(#[from] GenericValueError),
 }
 
-impl Config {
+impl <'a> Config<'a> {
     /// Creates a Config by wrapping around the `vaCreateConfig` call. This is just a helper for
     /// [`Display::create_config`].
     pub(crate) fn new(
-        display: Rc<Display>,
+        display: &'a Display,
         mut attrs: Vec<bindings::VAConfigAttrib>,
         profile: bindings::VAProfile::Type,
         entrypoint: bindings::VAEntrypoint::Type,

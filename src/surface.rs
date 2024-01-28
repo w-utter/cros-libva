@@ -6,7 +6,6 @@ use std::any::Any;
 use std::os::fd::FromRawFd;
 use std::os::fd::OwnedFd;
 use std::os::raw::c_void;
-use std::rc::Rc;
 use std::mem::MaybeUninit;
 
 use crate::bindings;
@@ -97,8 +96,8 @@ where
 }
 
 /// An owned VA surface that is tied to a particular `Display`.
-pub struct Surface<D: SurfaceMemoryDescriptor> {
-    display: Rc<Display>,
+pub struct Surface<'d, D: SurfaceMemoryDescriptor> {
+    display: &'d Display,
     id: bindings::VASurfaceID,
     descriptor: D,
     width: u32,
@@ -167,11 +166,11 @@ impl bindings::VASurfaceAttrib {
     }
 }
 
-impl<D: SurfaceMemoryDescriptor> Surface<D> {
+impl<'d, D: SurfaceMemoryDescriptor> Surface<'d, D> {
     /// Create `Surfaces` by wrapping around a `vaCreateSurfaces` call. This is just a helper for
     /// [`Display::create_surfaces`].
     pub(crate) fn new(
-        display: Rc<Display>,
+        display: &'d Display,
         rt_format: u32,
         va_fourcc: Option<u32>,
         width: u32,
@@ -217,7 +216,7 @@ impl<D: SurfaceMemoryDescriptor> Surface<D> {
                     )
                 })
                 .map(|_| Self {
-                    display: Rc::clone(&display),
+                    display: &display,
                     id: surface_id,
                     descriptor,
                     width,
@@ -227,7 +226,7 @@ impl<D: SurfaceMemoryDescriptor> Surface<D> {
             .collect()
     }
 
-    pub(crate) fn display(&self) -> &Rc<Display> {
+    pub(crate) fn display(&self) -> &Display {
         &self.display
     }
 

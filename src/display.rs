@@ -8,7 +8,6 @@ use std::io;
 use std::os::unix::io::AsRawFd;
 use std::path::Path;
 use std::path::PathBuf;
-use std::rc::Rc;
 
 use thiserror::Error;
 
@@ -92,7 +91,7 @@ impl Display {
     /// Opens and initializes a specific DRM `Display`.
     ///
     /// `path` is the path to a DRM device that supports VAAPI, e.g. `/dev/dri/renderD128`.
-    pub fn open_drm_display<P: AsRef<Path>>(path: P) -> Result<Rc<Self>, OpenDrmDisplayError> {
+    pub fn open_drm_display<P: AsRef<Path>>(path: P) -> Result<Self, OpenDrmDisplayError> {
         let file = std::fs::File::options()
             .read(true)
             .write(true)
@@ -112,10 +111,10 @@ impl Display {
         // vaInitialize. The File will close the DRM fd on drop.
         va_check(unsafe { bindings::vaInitialize(display, &mut major, &mut minor) })
             .map(|()| {
-                Rc::new(Self {
+                Self {
                     handle: display,
                     drm_file: file,
-                })
+                }
             })
             .map_err(OpenDrmDisplayError::VaInitialize)
     }
@@ -124,7 +123,7 @@ impl Display {
     ///
     /// If an error occurs on a given device, it is ignored and the next one is tried until one
     /// succeeds or we reach the end of the iterator.
-    pub fn open() -> Option<Rc<Self>> {
+    pub fn open() -> Option<Self> {
         let devices = DrmDeviceIterator::default();
 
         // Try all the DRM devices until one succeeds.
@@ -263,7 +262,7 @@ impl Display {
     /// case of error the `descriptors` will be destroyed. Make sure to duplicate the descriptors
     /// if you need something outside of libva to access them.
     pub fn create_surfaces<D: SurfaceMemoryDescriptor>(
-        self: &Rc<Self>,
+        &self,
         rt_format: u32,
         va_fourcc: Option<u32>,
         width: u32,
@@ -272,7 +271,7 @@ impl Display {
         descriptors: Vec<D>,
     ) -> Result<Vec<Surface<D>>, VaError> {
         Surface::new(
-            Rc::clone(self),
+            self,
             rt_format,
             va_fourcc,
             width,
@@ -291,16 +290,16 @@ impl Display {
     /// * `coded_height` - The coded picture height
     /// * `surfaces` - Optional hint for the amount of surfaces tied to the context
     /// * `progressive` - Whether only progressive frame pictures are present in the sequence
-    pub fn create_context<D: SurfaceMemoryDescriptor>(
-        self: &Rc<Self>,
+    pub fn create_context<'a, D: SurfaceMemoryDescriptor>(
+        &'a self,
         config: &Config,
         coded_width: u32,
         coded_height: u32,
         surfaces: Option<&[Surface<D>]>,
         progressive: bool,
-    ) -> Result<Rc<Context>, VaError> {
+    ) -> Result<Context<'a>, VaError> {
         Context::new(
-            Rc::clone(self),
+            self,
             config,
             coded_width,
             coded_height,
@@ -315,13 +314,13 @@ impl Display {
     /// for a given profile/entrypoint pair can be retrieved using
     /// [`Display::get_config_attributes`]. Other attributes will take their default values, and
     /// `attrs` can be empty in order to obtain a default configuration.
-    pub fn create_config(
-        self: &Rc<Self>,
+    pub fn create_config<'a>(
+        &'a self,
         attrs: Vec<bindings::VAConfigAttrib>,
         profile: bindings::VAProfile::Type,
         entrypoint: bindings::VAEntrypoint::Type,
-    ) -> Result<Config, VaError> {
-        Config::new(Rc::clone(self), attrs, profile, entrypoint)
+    ) -> Result<Config<'a>, VaError> {
+        Config::new(self, attrs, profile, entrypoint)
     }
 
     /// Returns available image formats for this display by wrapping around `vaQueryImageFormats`.

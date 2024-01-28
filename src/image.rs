@@ -15,9 +15,9 @@ use crate::VaError;
 ///
 /// An image is used to either get the surface data to client memory, or to copy image data in
 /// client memory to a surface.
-pub struct Image<'a> {
+pub struct Image<'a, 'd> where 'd: 'a {
     /// The display from which the image was created, so we can unmap it upon destruction.
-    display: Rc<Display>,
+    display: &'d Display,
     /// The `VAImage` returned by libva.
     image: bindings::VAImage,
     /// The mapped surface data.
@@ -39,12 +39,12 @@ pub struct Image<'a> {
     surface_id: u32,
 }
 
-impl<'a> Image<'a> {
+impl<'a, 'd> Image<'a, 'd> where 'd: 'a {
     /// Helper method to map a `VAImage` using `vaMapBuffer` and return an `Image`.
     ///
     /// Returns an error if the mapping failed.
     fn new<D: SurfaceMemoryDescriptor>(
-        surface: &'a Surface<D>,
+        surface: &'a Surface<'d, D>,
         image: bindings::VAImage,
         derived: bool,
         display_resolution: (u32, u32),
@@ -68,7 +68,7 @@ impl<'a> Image<'a> {
                 let data =
                     unsafe { std::slice::from_raw_parts_mut(addr as _, image.data_size as usize) };
                 Ok(Image {
-                    display: Rc::clone(surface.display()),
+                    display: surface.display(),
                     image,
                     data,
                     derived,
@@ -96,7 +96,7 @@ impl<'a> Image<'a> {
     ///
     /// `visible_rect` is the visible rectangle inside `surface` that we want to access.
     pub fn derive_from<D: SurfaceMemoryDescriptor>(
-        surface: &'a Surface<D>,
+        surface: &'a Surface<'d, D>,
         visible_rect: (u32, u32),
     ) -> Result<Self, VaError> {
         // An all-zero byte-pattern is a valid initial value for `VAImage`.
@@ -118,11 +118,11 @@ impl<'a> Image<'a> {
     /// `coded_resolution`, meaning the data can be scaled if `coded_resolution` and `visible_rect`
     /// differ.
     pub fn create_from<D: SurfaceMemoryDescriptor>(
-        surface: &'a Surface<D>,
+        surface: &'a Surface<'d, D>,
         mut format: bindings::VAImageFormat,
         coded_resolution: (u32, u32),
         visible_rect: (u32, u32),
-    ) -> Result<Image, VaError> {
+    ) -> Result<Self, VaError> {
         // An all-zero byte-pattern is a valid initial value for `VAImage`.
         let mut image: bindings::VAImage = Default::default();
         let dpy = surface.display().handle();
