@@ -31,7 +31,7 @@ impl Context {
         config: &Config,
         coded_width: u32,
         coded_height: u32,
-        surfaces: Option<&Vec<Surface<D>>>,
+        surfaces: Option<&[Surface<D>]>,
         progressive: bool,
     ) -> Result<Rc<Self>, VaError> {
         let mut context_id = 0;
@@ -41,10 +41,9 @@ impl Context {
             0
         };
 
-        let mut render_targets = match surfaces {
-            Some(surfaces) => Surface::as_id_vec(surfaces),
-            None => Default::default(),
-        };
+        let mut render_targets = surfaces
+            .map(|surfaces| Surface::as_id_vec(surfaces))
+            .unwrap_or_default();
 
         // Safe because `self` represents a valid VADisplay and render_targets
         // and ntargets are properly initialized. Note that render_targets==NULL

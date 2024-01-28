@@ -296,7 +296,7 @@ impl Display {
         config: &Config,
         coded_width: u32,
         coded_height: u32,
-        surfaces: Option<&Vec<Surface<D>>>,
+        surfaces: Option<&[Surface<D>]>,
         progressive: bool,
     ) -> Result<Rc<Context>, VaError> {
         Context::new(

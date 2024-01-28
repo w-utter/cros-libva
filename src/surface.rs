@@ -7,6 +7,7 @@ use std::os::fd::FromRawFd;
 use std::os::fd::OwnedFd;
 use std::os::raw::c_void;
 use std::rc::Rc;
+use std::mem::MaybeUninit;
 
 use crate::bindings;
 use crate::display::Display;
@@ -178,53 +179,52 @@ impl<D: SurfaceMemoryDescriptor> Surface<D> {
         usage_hint: Option<UsageHint>,
         descriptors: Vec<D>,
     ) -> Result<Vec<Self>, VaError> {
-        let mut surfaces = vec![];
+        let attr_count = usize::from(va_fourcc.is_some()) + usize::from(usage_hint.is_some());
 
-        for mut descriptor in descriptors {
-            let mut attrs = vec![];
+        descriptors
+            .into_iter()
+            .map(|desc| {
+                let mut attrs = Vec::with_capacity(attr_count);
 
-            if let Some(usage_hint) = usage_hint {
-                attrs.push(bindings::VASurfaceAttrib::new_usage_hint(usage_hint));
-            }
+                if let Some(usage_hint) = usage_hint {
+                    attrs.push(bindings::VASurfaceAttrib::new_usage_hint(usage_hint));
+                }
 
-            if let Some(fourcc) = va_fourcc {
-                attrs.push(bindings::VASurfaceAttrib::new_pixel_format(fourcc));
-            }
+                if let Some(fourcc) = va_fourcc {
+                    attrs.push(bindings::VASurfaceAttrib::new_pixel_format(fourcc));
+                }
 
-            // Just to be kept alive until we call `vaCreateSurfaces`...
-            let mut _va_desc = descriptor.add_attrs(&mut attrs);
-            let mut surface_id: VASurfaceID = 0;
+                // Just to be kept alive until we call `vaCreateSurfaces`...
+                let va_desc = desc.add_attrs(&mut attrs);
+                let mut surface_id: VASurfaceID = 0;
 
-            // Safe because `self` represents a valid VADisplay. The `surface` and `attrs` vectors are
-            // properly initialized and valid sizes are passed to the C function, so it is impossible to
-            // write past the end of their storage by mistake.
-            //
-            // Also all the pointers in `attrs` are pointing to valid objects that haven't been
-            // moved or destroyed.
-            match va_check(unsafe {
-                bindings::vaCreateSurfaces(
-                    display.handle(),
-                    rt_format,
-                    width,
-                    height,
-                    &mut surface_id,
-                    1,
-                    attrs.as_mut_ptr(),
-                    attrs.len() as u32,
-                )
-            }) {
-                Ok(()) => surfaces.push(Self {
+                // Safe because `self` represents a valid VADisplay. The `surface` and `attrs` vectors are
+                // properly initialized and valid sizes are passed to the C function, so it is impossible to
+                // write past the end of their storage by mistake.
+                //
+                // Also all the pointers in `attrs` are pointing to valid objects that haven't been
+                // moved or destroyed.
+                va_check(unsafe {
+                    bindings::vaCreateSurfaces(
+                        display.handle(),
+                        rt_format,
+                        width,
+                        height,
+                        &mut surface_id,
+                        1,
+                        attrs.as_mut_ptr(),
+                        attrs.len() as u32,
+                    )
+                })
+                .map(|_| Self {
                     display: Rc::clone(&display),
                     id: surface_id,
                     descriptor,
                     width,
                     height,
-                }),
-                Err(e) => return Err(e),
-            }
-        }
-
-        Ok(surfaces)
+                })
+            })
+            .collect()
     }
 
     pub(crate) fn display(&self) -> &Rc<Display> {
@@ -287,26 +287,29 @@ impl<D: SurfaceMemoryDescriptor> Surface<D> {
         // to create "safe" descriptors outside of this method and thus from made up values,
         // violating the safety guarantee that our FDs are legit.
 
-        let objects = (0..desc.num_objects as usize)
-            // Make sure we don't go out of bounds.
-            .take(4)
-            .map(|i| desc.objects[i])
-            .map(|o| {
-                DrmPrimeSurfaceDescriptorObject {
+        let mut object_count = 0;
+        let objects = desc.objects.map(|o| {
+            let raw = core::mem::MaybeUninit::uninit();
+            if object_count < desc.num_objects {
+                object_count += 1;
+                raw.write(DrmPrimeSurfaceDescriptorObject {
                     // Safe because `o.fd` is a valid file descriptor returned by
                     // `vaExportSurfaceHandle`.
                     fd: unsafe { OwnedFd::from_raw_fd(o.fd) },
                     size: o.size,
                     drm_format_modifier: o.drm_format_modifier,
-                }
-            })
-            .collect();
+                })
+            }
+            raw
+        });
+        let objects = DescriptorAttr::new(objects, desc.num_objects);
 
-        let layers = (0..desc.num_layers as usize)
-            // Make sure we don't go out of bounds.
-            .take(4)
-            .map(|i| desc.layers[i])
-            .map(|l| DrmPrimeSurfaceDescriptorLayer {
+        let mut layer_count = 0;
+        let layers = desc.layers.map(|l| {
+            let raw = core::mem::MaybeUninit::uninit();
+            if layer_count < desc.num_layers {
+                layer_count += 2;
+                raw.write(DrmPrimeSurfaceDescriptorLayer {
                 drm_format: l.drm_format,
                 num_planes: l.num_planes,
                 object_index: [
@@ -318,7 +321,9 @@ impl<D: SurfaceMemoryDescriptor> Surface<D> {
                 offset: l.offset,
                 pitch: l.pitch,
             })
-            .collect();
+            }
+        });
+        let layers = DescriptorAttr::new(layers, desc.num_layers);
 
         Ok(DrmPrimeSurfaceDescriptor {
             fourcc: desc.fourcc,
@@ -370,6 +375,43 @@ pub struct DrmPrimeSurfaceDescriptor {
     pub fourcc: u32,
     pub width: u32,
     pub height: u32,
-    pub objects: Vec<DrmPrimeSurfaceDescriptorObject>,
-    pub layers: Vec<DrmPrimeSurfaceDescriptorLayer>,
+    objects: DescriptorAttr<DrmPrimeSurfaceDescriptorObject>,
+    layers: DescriptorAttr<DrmPrimeSurfaceDescriptorLayer>,
+}
+
+struct DescriptorAttr<T> {
+    attr: [MaybeUninit<T>; 4],
+    count: u32,
+}
+
+impl <T> DescriptorAttr<T> {
+    fn new(attr: [MaybeUninit<T>; 4], count: u32) {
+        Self {
+            attr,
+            count,
+        }
+    }
+}
+
+impl <T> AsRef<[T]> for DescriptorAttr {
+    fn as_ref(&self) -> &[T] {
+        // SAFETY: these values will always be valid
+        unsafe {
+            std::slice::from_raw_parts(self.attr.as_ptr() as *const T, self.count as usize)
+        }
+    }
+}
+
+impl <T> Drop for  DescriptorAttr<T> {
+    fn drop(&mut self) {
+        let mut count = 0;
+        for attr in self.attr {
+            if count < self.count {
+                count += 1;
+                // SAFETY: any element whos index is less than the count is assumed to be
+                // initalized from when the data is created in `export_prime`.
+                let _ = unsafe { attr.assume_init() };
+            }
+        }
+    }
 }

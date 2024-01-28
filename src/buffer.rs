@@ -21,6 +21,7 @@ pub use vp8::*;
 pub use vp9::*;
 
 use std::rc::Rc;
+use std::ffi::c_void;
 
 use log::error;
 
@@ -53,150 +54,150 @@ impl Buffer {
         let (ptr, size) = match type_ {
             BufferType::PictureParameter(ref mut picture_param) => match picture_param {
                 PictureParameter::MPEG2(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 PictureParameter::VP8(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 PictureParameter::VP9(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 PictureParameter::H264(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 PictureParameter::HEVC(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 PictureParameter::HEVCRext(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 PictureParameter::HEVCScc(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 PictureParameter::AV1(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
             },
 
             BufferType::SliceParameter(ref mut slice_param) => match slice_param {
                 SliceParameter::MPEG2(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 SliceParameter::VP8(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 SliceParameter::VP9(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 SliceParameter::H264(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 SliceParameter::HEVC(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 SliceParameter::HEVCRext(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 SliceParameter::AV1(ref mut wrapper) => (
-                    wrapper.inner_mut().as_mut_ptr() as *mut std::ffi::c_void,
+                    wrapper.inner_mut().as_mut_ptr() as *mut c_void,
                     std::mem::size_of::<bindings::VASliceParameterBufferAV1>(),
                 ),
             },
 
             BufferType::IQMatrix(ref mut iq_matrix) => match iq_matrix {
                 IQMatrix::MPEG2(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 IQMatrix::VP8(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 IQMatrix::H264(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 IQMatrix::HEVC(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
             },
 
             BufferType::Probability(ref mut wrapper) => (
-                wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                wrapper.inner_mut() as *mut _ as *mut c_void,
                 std::mem::size_of_val(wrapper.inner_mut()),
             ),
 
             BufferType::SliceData(ref mut data) => {
-                (data.as_mut_ptr() as *mut std::ffi::c_void, data.len())
+                (data.as_mut_ptr() as *mut c_void, data.len())
             }
 
             BufferType::EncSequenceParameter(ref mut seq_param) => match seq_param {
                 EncSequenceParameter::H264(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 EncSequenceParameter::HEVC(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 EncSequenceParameter::VP8(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 EncSequenceParameter::VP9(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
             },
 
             BufferType::EncPictureParameter(ref mut picture_param) => match picture_param {
                 EncPictureParameter::H264(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 EncPictureParameter::HEVC(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 EncPictureParameter::VP8(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 EncPictureParameter::VP9(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
             },
 
             BufferType::EncSliceParameter(ref mut slice_param) => match slice_param {
                 EncSliceParameter::H264(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 EncSliceParameter::HEVC(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
             },
 
             BufferType::EncMacroblockParameterBuffer(ref mut mb_param) => match mb_param {
                 EncMacroblockParameterBuffer::H264(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
             },
@@ -205,35 +206,35 @@ impl Buffer {
 
             BufferType::EncMiscParameter(ref mut enc_misc_param) => match enc_misc_param {
                 EncMiscParameter::FrameRate(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 EncMiscParameter::RateControl(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 EncMiscParameter::MaxSliceSize(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 EncMiscParameter::MaxFrameSize(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 EncMiscParameter::SkipFrame(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 EncMiscParameter::HRD(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 EncMiscParameter::QualityLevel(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
                 EncMiscParameter::Quantization(ref mut wrapper) => (
-                    wrapper.inner_mut() as *mut _ as *mut std::ffi::c_void,
+                    wrapper.inner_mut() as *mut _ as *mut c_void,
                     std::mem::size_of_val(wrapper.inner_mut()),
                 ),
             },
@@ -495,7 +496,7 @@ impl<'p> MappedCodedBuffer<'p> {
     }
 
     /// Returns the segments of mapped coded buffers.
-    pub fn segments(&self) -> &Vec<MappedCodedSegment<'p>> {
+    pub fn segments(&self) -> &[MappedCodedSegment<'p>] {
         &self.segments
     }
 }

@@ -166,7 +166,7 @@ impl<T> Picture<PictureNew, T> {
             )
         });
 
-        res.map(|()| Picture {
+        res.map(|_| Picture {
             inner: self.inner,
             phantom: PhantomData,
         })
@@ -188,7 +188,7 @@ impl<T> Picture<PictureBegin, T> {
                 self.inner.buffers.len() as i32,
             )
         })
-        .map(|()| Picture {
+        .map(|_| Picture {
             inner: self.inner,
             phantom: PhantomData,
         })
@@ -205,7 +205,7 @@ impl<T> Picture<PictureRender, T> {
                 self.inner.context.id(),
             )
         })
-        .map(|()| Picture {
+        .map(|_| Picture {
             inner: self.inner,
             phantom: PhantomData,
         })
@@ -259,9 +259,7 @@ impl<S: PictureReclaimableSurface, T> Picture<S, T> {
     /// underlying surface.
     pub fn take_surface(self) -> Result<T, Self> {
         let inner = self.inner;
-        match Rc::try_unwrap(inner.surface) {
-            Ok(surface) => Ok(surface),
-            Err(surface) => Err(Self {
+        Rc::try_unwrap(inner.surface).map_err(|surface| Self {
                 inner: Box::new(PictureInner {
                     surface,
                     context: inner.context,
@@ -269,8 +267,7 @@ impl<S: PictureReclaimableSurface, T> Picture<S, T> {
                     timestamp: inner.timestamp,
                 }),
                 phantom: PhantomData,
-            }),
-        }
+        })
     }
 
     /// Create a new derived image from this `Picture` using `vaDeriveImage`.
