@@ -7,8 +7,53 @@
 use crate::bindings;
 
 /// Wrapper over the `seq_fields` bindgen field in `VADecPictureParameterBufferAV1`.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy)]
 pub struct AV1SeqFields(bindings::_VADecPictureParameterBufferAV1__bindgen_ty_1);
+
+impl Debug for AV1SeqFields {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Av1SeqFields")
+            .field("still_picture", self.0.fields._bitfield_1 & 0b1)
+            .field("use_128x128_superblock", self.0.fields._bitfield_1 & 0b01)
+            .field("enable_filter_intra", self.0.fields._bitfield_1 & 0b001)
+            .field(
+                "enable_intra_endge_filter",
+                self.0.fields._bitfield_1 & 0b0001,
+            )
+            .field(
+                "enable_interintra_compound",
+                self.0.fields._bitfield_1 & 0b00001,
+            )
+            .field("enable_dual_filter", self.0.fields._bitfield_1 & 0b000001)
+            .field("enable_order_hint", self.0.fields._bitfield_1 & 0b0000001)
+            .field("enable_jnt_comp", self.0.fields._bitfield_1 & 0b00000001)
+            .field("enable_cdef", self.0.fields._bitfield_1 & 0b000000001)
+            .field("mono_chrome", self.0.fields._bitfield_1 & 0b0000000001)
+            .field("color_range", self.0.fields._bitfield_1 & 0b00000000001)
+            .field("subsampling_x", self.0.fields._bitfield_1 & 0b0000000000001)
+            .field(
+                "subsampling_y",
+                self.0.fields._bitfield_1 & 0b00000000000001,
+            )
+            .field(
+                "chroma_sample_position",
+                self.0.fields._bitfield_1 & 0b000000000000001,
+            )
+            .field(
+                "film_grain_params_present",
+                self.0.fields._bitfield_1 & 0b0000000000000001,
+            )
+            .finish()
+    }
+}
+
+impl PartialEq for AV1SeqFields {
+    fn eq(&self, rhs: &Self) -> bool {
+        self.0.fields._bitfield_1 == rhs.0.fields._bitfield_1
+    }
+}
+
+impl Eq for AV1SeqFields {}
 
 impl AV1SeqFields {
     /// Creates the bindgen field
@@ -62,8 +107,27 @@ impl AV1SeqFields {
 }
 
 /// Wrapper over the `segment_info_fields` bindgen field in `VASegmentationStructAV1`.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy)]
 pub struct AV1SegmentInfoFields(bindings::_VASegmentationStructAV1__bindgen_ty_1);
+
+impl Debug for AV1SegmentInfoFields {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("AV1SegmentInfoFields")
+            .field("enabled", self.0.bits._bitfield_1 & 0b1)
+            .field("update_map", self.0.bits._bitfield_1 & 0b01)
+            .field("temporal_update", self.0.bits._bitfield_1 & 0b001)
+            .field("update_data", self.0.bits._bitfield_1 & 0b0001)
+        .finish()
+    }
+}
+
+impl PartialEq for AV1SegmentInfoFields {
+    fn eq(&self, rhs: &Self) -> bool {
+        self.0.bits._bitfield_1 == rhs.0.bits._bitfield_1
+    }
+}
+
+impl Eq for AV1SegmentInfoFields {}
 
 impl AV1SegmentInfoFields {
     /// Creates the bindgen field
@@ -87,8 +151,17 @@ impl AV1SegmentInfoFields {
 }
 
 /// Wrapper over the `seg_info` bindgen field in `VADecPictureParameterBufferAV1`.
-#[derive(Debug)]
 pub struct AV1Segmentation(bindings::VASegmentationStructAV1);
+
+impl Debug for AV1Segmentation {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("AV1Segmentation")
+            .field("segment_info_fields", self.0.segment_info_fields)
+            .field("feature_data", &self.0.feature_data)
+            .field("segment_info_fields", &self.0.feature_mask)
+            .finish()
+    }
+}
 
 impl AV1Segmentation {
     /// Creates the bindgen field
@@ -108,8 +181,31 @@ impl AV1Segmentation {
 }
 
 /// Wrapper over the `film_grain_fields` bindgen field in `VADecPictureParameterBufferAV1`.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy)]
 pub struct AV1FilmGrainFields(bindings::_VAFilmGrainStructAV1__bindgen_ty_1);
+
+impl Debug for AV1FilmGrainFields {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("AV1FilmGrainFields")
+            .field("apply_grain", self.0.bits._bitfield_1 & 0b1)
+            .field("chroma_scaling_from_luma", self.0.bits._bitfield_1 & 0b01)
+            .field("grain_scaling_minus_8", self.0.bits._bitfield_1 & 0b0011)
+            .field("ar_coeff_lag", self.0.bits._bitfield_1 & 0b00001)
+            .field("ar_coeff_shift_minus_6", self.0.bits._bitfield_1 & 0b0000011)
+            .field("grain_scale_shift", self.0.bits._bitfield_1 & 0b00000001)
+            .field("overlap_flag", self.0.bits._bitfield_1 & 0b000000001)
+            .field("clip_to_restricted_range", self.0.bits._bitfield_1 & 0b0000000001)
+            .finish()
+    }
+}
+
+impl PartialEq for AV1FilmGrainFields {
+    fn eq(&self, rhs: &Self) -> bool {
+        self.0.bits._bitfield_1 == rhs.0.bits._bitfield_1
+    }
+}
+
+impl Eq for AV1FilmGrainFields {}
 
 impl AV1FilmGrainFields {
     /// Creates the bindgen field

@@ -32,7 +32,13 @@ impl PictureH264 {
 
 impl Default for PictureH264 {
     fn default() -> Self {
-        Self::new(bindings::constants::VA_INVALID_ID, 0, bindings::constants::VA_INVALID_SURFACE, 0, 0)
+        Self::new(
+            bindings::constants::VA_INVALID_ID,
+            0,
+            bindings::constants::VA_INVALID_SURFACE,
+            0,
+            0,
+        )
     }
 }
 
@@ -312,7 +318,7 @@ impl IQMatrixBufferH264 {
 }
 
 /// Wrapper over the `seq_fields` bindgen field in `VAEncSequenceParameterBufferH264`
-#[derive(Debugm Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct H264EncSeqFields(bindings::_VAEncSequenceParameterBufferH264__bindgen_ty_1);
 
 impl H264EncSeqFields {
