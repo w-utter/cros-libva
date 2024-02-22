@@ -7,6 +7,7 @@
 use crate::bindings;
 
 /// Wrapper over the `VAPictureH264` FFI type.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct PictureH264(bindings::VAPictureH264);
 
 impl PictureH264 {
@@ -29,7 +30,14 @@ impl PictureH264 {
     }
 }
 
+impl Default for PictureH264 {
+    fn default() -> Self {
+        Self::new(bindings::constants::VA_INVALID_ID, 0, bindings::constants::VA_INVALID_SURFACE, 0, 0)
+    }
+}
+
 /// Wrapper over the `seq_fields` bindgen field in `VAPictureParameterBufferH264`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct H264SeqFields(bindings::_VAPictureParameterBufferH264__bindgen_ty_1);
 
 impl H264SeqFields {
@@ -79,6 +87,7 @@ impl H264SeqFields {
 }
 
 /// Wrapper over the `pic_fields` bindgen field in `VAPictureParameterBufferH264`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct H264PicFields(bindings::_VAPictureParameterBufferH264__bindgen_ty_2);
 
 impl H264PicFields {
@@ -126,6 +135,7 @@ impl H264PicFields {
 }
 
 /// A wrapper over `VAPictureParameterBufferH264` FFI type
+#[derive(Debug)]
 pub struct PictureParameterBufferH264(Box<bindings::VAPictureParameterBufferH264>);
 
 impl PictureParameterBufferH264 {
@@ -150,13 +160,7 @@ impl PictureParameterBufferH264 {
         pic_fields: &H264PicFields,
         frame_num: u16,
     ) -> Self {
-        let reference_frames = (0..16usize)
-            .map(|i| reference_frames[i].0)
-            .collect::<Vec<_>>()
-            .try_into()
-            // try_into is guaranteed to work because the iterator and target array have the same
-            // size.
-            .unwrap();
+        let reference_frames = reference_frames.map(|frame| frame.0);
 
         let seq_fields = seq_fields.0;
         let pic_fields = pic_fields.0;
@@ -194,6 +198,7 @@ impl PictureParameterBufferH264 {
 }
 
 /// Wrapper over the `VASliceParameterBufferH264` FFI type.
+#[derive(Debug)]
 pub struct SliceParameterBufferH264(Box<bindings::VASliceParameterBufferH264>);
 
 impl SliceParameterBufferH264 {
@@ -280,6 +285,7 @@ impl SliceParameterBufferH264 {
 }
 
 /// Wrapper over the `VAIQMatrixBufferH264` FFI type
+#[derive(Debug)]
 pub struct IQMatrixBufferH264(Box<bindings::VAIQMatrixBufferH264>);
 
 impl IQMatrixBufferH264 {
@@ -306,6 +312,7 @@ impl IQMatrixBufferH264 {
 }
 
 /// Wrapper over the `seq_fields` bindgen field in `VAEncSequenceParameterBufferH264`
+#[derive(Debugm Clone, Copy, PartialEq, Eq)]
 pub struct H264EncSeqFields(bindings::_VAEncSequenceParameterBufferH264__bindgen_ty_1);
 
 impl H264EncSeqFields {
@@ -348,7 +355,7 @@ impl H264EncSeqFields {
     }
 }
 
-#[derive(Default)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct H264VuiFields(bindings::_VAEncSequenceParameterBufferH264__bindgen_ty_2);
 
 impl H264VuiFields {
@@ -385,7 +392,7 @@ impl H264VuiFields {
     }
 }
 
-#[derive(Default)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct H264EncFrameCropOffsets {
     pub left: u32,
     pub right: u32,
@@ -409,6 +416,7 @@ impl H264EncFrameCropOffsets {
     }
 }
 
+#[derive(Debug)]
 pub struct EncSequenceParameterBufferH264(Box<bindings::VAEncSequenceParameterBufferH264>);
 
 impl EncSequenceParameterBufferH264 {
@@ -489,6 +497,7 @@ impl EncSequenceParameterBufferH264 {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct H264EncPicFields(bindings::_VAEncPictureParameterBufferH264__bindgen_ty_1);
 
 impl H264EncPicFields {
@@ -531,6 +540,7 @@ impl H264EncPicFields {
     }
 }
 
+#[derive(Debug)]
 pub struct EncPictureParameterBufferH264(Box<bindings::VAEncPictureParameterBufferH264>);
 
 impl EncPictureParameterBufferH264 {
@@ -550,14 +560,7 @@ impl EncPictureParameterBufferH264 {
         second_chroma_qp_index_offset: i8,
         pic_fields: &H264EncPicFields,
     ) -> Self {
-        let reference_frames = (0..16usize)
-            .map(|i| reference_frames[i].0)
-            .collect::<Vec<_>>()
-            .try_into()
-            // try_into is guaranteed to work because the iterator and target array have the same
-            // size.
-            .unwrap();
-
+        let reference_frames = reference_frames.map(|frame| frame.0);
         let pic_fields = pic_fields.0;
 
         Self(Box::new(bindings::_VAEncPictureParameterBufferH264 {
@@ -583,6 +586,7 @@ impl EncPictureParameterBufferH264 {
     }
 }
 
+#[derive(Debug)]
 pub struct EncSliceParameterBufferH264(Box<bindings::VAEncSliceParameterBufferH264>);
 
 impl EncSliceParameterBufferH264 {
@@ -675,6 +679,7 @@ impl EncSliceParameterBufferH264 {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct H264EncMacroblockInfo(bindings::_VAEncMacroblockParameterBufferH264__bindgen_ty_1);
 
 impl H264EncMacroblockInfo {
@@ -704,6 +709,7 @@ impl H264EncMacroblockInfo {
     }
 }
 
+#[derive(Debug)]
 pub struct EncMacroblockParameterBufferH264(Box<bindings::VAEncMacroblockParameterBufferH264>);
 
 impl EncMacroblockParameterBufferH264 {

@@ -7,6 +7,7 @@
 use crate::bindings;
 
 /// Wrapper over the `pic_fields` bindgen field in `VAPictureParameterBufferVP9`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct VP9PicFields(bindings::_VADecPictureParameterBufferVP9__bindgen_ty_1);
 
 impl VP9PicFields {
@@ -77,6 +78,7 @@ impl VP9PicFields {
 }
 
 /// Wrapper over the `PictureParameterBufferVP9` FFI type.
+#[derive(Debug)]
 pub struct PictureParameterBufferVP9(Box<bindings::VADecPictureParameterBufferVP9>);
 
 impl PictureParameterBufferVP9 {
@@ -130,6 +132,7 @@ impl PictureParameterBufferVP9 {
 }
 
 /// Wrapper over the `segment_flags` bindgen field in `VASegmentParameterVP9`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct VP9SegmentFlags(bindings::_VASegmentParameterVP9__bindgen_ty_1);
 
 impl VP9SegmentFlags {
@@ -162,6 +165,7 @@ impl VP9SegmentFlags {
 }
 
 /// Wrapper over the `VASegmentParameterVP9` FFI type.
+#[derive(Debug)]
 pub struct SegmentParameterVP9(bindings::VASegmentParameterVP9);
 
 impl SegmentParameterVP9 {
@@ -189,6 +193,7 @@ impl SegmentParameterVP9 {
 }
 
 /// Wrapper over the `VASliceParameterBufferVP9` FFI type.
+#[derive(Debug)]
 pub struct SliceParameterBufferVP9(Box<bindings::VASliceParameterBufferVP9>);
 
 impl SliceParameterBufferVP9 {
@@ -220,6 +225,7 @@ impl SliceParameterBufferVP9 {
     }
 }
 
+#[derive(Debug)]
 pub struct CodedBufferVP9Status(Box<bindings::VACodedBufferVP9Status>);
 
 impl CodedBufferVP9Status {
@@ -241,6 +247,7 @@ impl CodedBufferVP9Status {
     }
 }
 
+#[derive(Debug)]
 pub struct EncSequenceParameterBufferVP9(Box<bindings::VAEncSequenceParameterBufferVP9>);
 
 impl EncSequenceParameterBufferVP9 {
@@ -270,6 +277,7 @@ impl EncSequenceParameterBufferVP9 {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct VP9EncRefFlags(bindings::_VAEncPictureParameterBufferVP9__bindgen_ty_1);
 
 impl VP9EncRefFlags {
@@ -310,6 +318,7 @@ impl VP9EncRefFlags {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct VP9EncPicFlags(bindings::_VAEncPictureParameterBufferVP9__bindgen_ty_2);
 
 impl VP9EncPicFlags {
@@ -364,6 +373,7 @@ impl VP9EncPicFlags {
     }
 }
 
+#[derive(Debug)]
 pub struct EncPictureParameterBufferVP9(Box<bindings::VAEncPictureParameterBufferVP9>);
 
 impl EncPictureParameterBufferVP9 {

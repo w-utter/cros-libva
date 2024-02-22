@@ -7,6 +7,7 @@
 use crate::bindings;
 
 /// Wrapper over the `seq_fields` bindgen field in `VADecPictureParameterBufferAV1`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct AV1SeqFields(bindings::_VADecPictureParameterBufferAV1__bindgen_ty_1);
 
 impl AV1SeqFields {
@@ -61,6 +62,7 @@ impl AV1SeqFields {
 }
 
 /// Wrapper over the `segment_info_fields` bindgen field in `VASegmentationStructAV1`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct AV1SegmentInfoFields(bindings::_VASegmentationStructAV1__bindgen_ty_1);
 
 impl AV1SegmentInfoFields {
@@ -85,6 +87,7 @@ impl AV1SegmentInfoFields {
 }
 
 /// Wrapper over the `seg_info` bindgen field in `VADecPictureParameterBufferAV1`.
+#[derive(Debug)]
 pub struct AV1Segmentation(bindings::VASegmentationStructAV1);
 
 impl AV1Segmentation {
@@ -105,6 +108,7 @@ impl AV1Segmentation {
 }
 
 /// Wrapper over the `film_grain_fields` bindgen field in `VADecPictureParameterBufferAV1`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct AV1FilmGrainFields(bindings::_VAFilmGrainStructAV1__bindgen_ty_1);
 
 impl AV1FilmGrainFields {
@@ -142,6 +146,7 @@ impl AV1FilmGrainFields {
 }
 
 /// Wrapper over the `film_grain_info` bindgen field in `VADecPictureParameterBufferAV1`.
+#[derive(Debug)]
 pub struct AV1FilmGrain(bindings::VAFilmGrainStructAV1);
 
 impl AV1FilmGrain {
@@ -197,6 +202,7 @@ impl AV1FilmGrain {
 }
 
 /// Wrapper over the `pic_info_fields` bindgen field in `VADecPictureParameterBufferAV1`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct AV1PicInfoFields(bindings::_VADecPictureParameterBufferAV1__bindgen_ty_2);
 
 impl AV1PicInfoFields {
@@ -250,6 +256,7 @@ impl AV1PicInfoFields {
 }
 
 /// Wrapper over the `loop_filter_fields` bindgen field in `VADecPictureParameterBufferAV1`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct AV1LoopFilterFields(bindings::_VADecPictureParameterBufferAV1__bindgen_ty_3);
 
 impl AV1LoopFilterFields {
@@ -272,6 +279,7 @@ impl AV1LoopFilterFields {
 }
 
 /// Wrapper over the `wm` bindgen field in `VADecPictureParameterBufferAV1`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct AV1WarpedMotionParams(bindings::VAWarpedMotionParamsAV1);
 
 impl AV1WarpedMotionParams {
@@ -291,6 +299,7 @@ impl AV1WarpedMotionParams {
 }
 
 /// Wrapper over the `loop_restoration_fields` bindgen field in `VADecPictureParameterBufferAV1`.
+#[derive(Debug)]
 pub struct AV1LoopRestorationFields(bindings::_VADecPictureParameterBufferAV1__bindgen_ty_6);
 
 impl AV1LoopRestorationFields {
@@ -321,6 +330,7 @@ impl AV1LoopRestorationFields {
 }
 
 /// Wrapper over the `mode_control_fields` bindgen field in `VADecPictureParameterBufferAV1`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct AV1ModeControlFields(bindings::_VADecPictureParameterBufferAV1__bindgen_ty_5);
 
 impl AV1ModeControlFields {
@@ -360,6 +370,7 @@ impl AV1ModeControlFields {
 }
 
 /// Wrapper over the `qmatrix_fields` bindgen field in `VADecPictureParameterBufferAV1`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct AV1QMatrixFields(bindings::_VADecPictureParameterBufferAV1__bindgen_ty_4);
 
 impl AV1QMatrixFields {
@@ -383,6 +394,7 @@ impl AV1QMatrixFields {
 }
 
 /// A wrapper over `VADecPictureParameterBufferAV1` FFI type
+#[derive(Debug)]
 pub struct PictureParameterBufferAV1(Box<bindings::VADecPictureParameterBufferAV1>);
 
 impl PictureParameterBufferAV1 {
@@ -519,6 +531,7 @@ impl PictureParameterBufferAV1 {
 /// A wrapper over an array of the `VASliceParameterBufferAV1` FFI type. This
 /// allows for passing all tile parameters in a single call if multiple tiles
 /// are present in the tile group.
+#[derive(Debug)]
 pub struct SliceParameterBufferAV1(Vec<bindings::VASliceParameterBufferAV1>);
 
 impl SliceParameterBufferAV1 {

@@ -25,6 +25,7 @@ use crate::VaError;
 ///
 /// DRM devices can be passed to [`Display::open_drm_display`] in order to create a `Display` on
 /// that device.
+#[derive(Debug)]
 pub struct DrmDeviceIterator {
     cur_idx: usize,
 }
@@ -69,6 +70,7 @@ impl Iterator for DrmDeviceIterator {
 /// Although libva offers several ways to create a display, this struct currently only supports
 /// opening through DRM. It may be extended to support other display types (X11, Wayland) in the
 /// future.
+#[derive(Debug)]
 pub struct Display {
     /// Handle to interact with the underlying `VADisplay`.
     handle: bindings::VADisplay,

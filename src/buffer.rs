@@ -30,6 +30,7 @@ use crate::Context;
 use crate::VaError;
 
 /// Wrapper type representing a buffer created with `vaCreateBuffer`.
+#[derive(Debug)]
 pub struct Buffer {
     context: Rc<Context>,
     id: bindings::VABufferID,
@@ -429,6 +430,7 @@ pub enum EncMacroblockParameterBuffer {
 }
 
 /// Wrapper type representing a buffer created with `vaCreateBuffer` with VAEncCodedBufferType.
+#[derive(Debug)]
 pub struct EncCodedBuffer(Buffer);
 
 impl EncCodedBuffer {
@@ -446,6 +448,7 @@ impl EncCodedBuffer {
 }
 
 /// Helper to access a single segment of mapped coded buffer
+#[derive(Debug)]
 pub struct MappedCodedSegment<'s> {
     pub bit_offset: u32,
     pub status: u32,
@@ -453,6 +456,7 @@ pub struct MappedCodedSegment<'s> {
 }
 
 /// Helper to access segments of mapped coded buffer
+#[derive(Debug)]
 pub struct MappedCodedBuffer<'p> {
     segments: Vec<MappedCodedSegment<'p>>,
     buffer: &'p EncCodedBuffer,

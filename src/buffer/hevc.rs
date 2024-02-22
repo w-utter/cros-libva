@@ -38,6 +38,7 @@ impl PictureHEVC {
 }
 
 /// Wrapper over the `pic_fields` bindgen field in `VAPictureParameterBufferHEVC`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct HevcPicFields(bindings::_VAPictureParameterBufferHEVC__bindgen_ty_1);
 
 impl HevcPicFields {
@@ -105,6 +106,7 @@ impl HevcPicFields {
 }
 
 /// Wrapper over the `slice_parsing_fields` bindgen field in `VAPictureParameterBufferHEVC`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct HevcSliceParsingFields(bindings::_VAPictureParameterBufferHEVC__bindgen_ty_2);
 
 impl HevcSliceParsingFields {
@@ -160,6 +162,7 @@ impl HevcSliceParsingFields {
 }
 
 /// A wrapper over `VAPictureParameterBufferHEVC` FFI type
+#[derive(Debug)]
 pub struct PictureParameterBufferHEVC(Box<bindings::VAPictureParameterBufferHEVC>);
 
 impl PictureParameterBufferHEVC {
@@ -268,6 +271,7 @@ impl PictureParameterBufferHEVC {
 }
 
 /// Wrapper over the `range_extension_pic_fields` bindgen field in `VAPictureParameterBufferHEVCRext`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct HevcRangeExtensionPicFields(bindings::_VAPictureParameterBufferHEVCRext__bindgen_ty_1);
 
 impl HevcRangeExtensionPicFields {
@@ -317,6 +321,7 @@ impl HevcRangeExtensionPicFields {
 }
 
 /// A wrapper over `VAPictureParameterBufferHEVCRext` FFI type
+#[derive(Debug)]
 pub struct PictureParameterBufferHEVCRext(Box<bindings::VAPictureParameterBufferHEVCRext>);
 
 impl PictureParameterBufferHEVCRext {
@@ -357,6 +362,7 @@ impl PictureParameterBufferHEVCRext {
 }
 
 /// Wrapper over the `screen_content_pic_fields` bindgen field in `VAPictureParameterBufferHEVCScc`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct HevcScreenContentPicFields(bindings::_VAPictureParameterBufferHEVCScc__bindgen_ty_1);
 
 impl HevcScreenContentPicFields {
@@ -396,6 +402,7 @@ impl HevcScreenContentPicFields {
 }
 
 /// A wrapper over `VAPictureParameterBufferScc` FFI type
+#[derive(Debug)]
 pub struct PictureParameterBufferHEVCScc(Box<bindings::VAPictureParameterBufferHEVCScc>);
 
 impl PictureParameterBufferHEVCScc {
@@ -436,6 +443,7 @@ impl PictureParameterBufferHEVCScc {
 }
 
 /// Wrapper over the `long_slice_flags` bindgen field in `VASliceParameterBufferHEVC`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct HevcLongSliceFlags(bindings::_VASliceParameterBufferHEVC__bindgen_ty_1);
 
 impl HevcLongSliceFlags {
@@ -487,6 +495,7 @@ impl HevcLongSliceFlags {
 }
 
 /// A wrapper over `VASliceParameterBufferHEVC` FFI type
+#[derive(Debug)]
 pub struct SliceParameterBufferHEVC(Box<bindings::VASliceParameterBufferHEVC>);
 
 impl SliceParameterBufferHEVC {
@@ -580,6 +589,7 @@ impl SliceParameterBufferHEVC {
 }
 
 /// Wrapper over the `slice_ext_flags` bindgen field in `VASliceParameterBufferHEVCRext`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct HevcSliceExtFlags(bindings::_VASliceParameterBufferHEVCRext__bindgen_ty_1);
 
 impl HevcSliceExtFlags {
@@ -608,6 +618,7 @@ impl HevcSliceExtFlags {
 }
 
 /// A wrapper over `VASliceParameterBufferHEVCRext` FFI type
+#[derive(Debug)]
 pub struct SliceParameterBufferHEVCRext(Box<bindings::VASliceParameterBufferHEVCRext>);
 
 impl SliceParameterBufferHEVCRext {
@@ -648,6 +659,7 @@ impl SliceParameterBufferHEVCRext {
 }
 
 /// A wrapper over `VAIQMatrixBufferHEVC` FFI type
+#[derive(Debug)]
 pub struct IQMatrixBufferHEVC(Box<bindings::VAIQMatrixBufferHEVC>);
 
 impl IQMatrixBufferHEVC {
@@ -682,6 +694,7 @@ impl IQMatrixBufferHEVC {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct HEVCEncSeqFields(bindings::_VAEncSequenceParameterBufferHEVC__bindgen_ty_1);
 
 impl HEVCEncSeqFields {
@@ -728,7 +741,7 @@ impl HEVCEncSeqFields {
     }
 }
 
-#[derive(Default)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct HevcEncVuiFields(bindings::_VAEncSequenceParameterBufferHEVC__bindgen_ty_2);
 
 impl HevcEncVuiFields {
@@ -769,6 +782,7 @@ impl HevcEncVuiFields {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct HevcEncSeqSccFields(bindings::_VAEncSequenceParameterBufferHEVC__bindgen_ty_3);
 
 impl HevcEncSeqSccFields {
@@ -788,6 +802,7 @@ impl HevcEncSeqSccFields {
     }
 }
 
+#[derive(Debug)]
 pub struct EncSequenceParameterBufferHEVC(Box<bindings::VAEncSequenceParameterBufferHEVC>);
 
 impl EncSequenceParameterBufferHEVC {
@@ -870,6 +885,7 @@ impl EncSequenceParameterBufferHEVC {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct HEVCEncPicFields(bindings::_VAEncPictureParameterBufferHEVC__bindgen_ty_1);
 
 impl HEVCEncPicFields {
@@ -928,6 +944,7 @@ impl HEVCEncPicFields {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct HevcEncPicSccFields(bindings::_VAEncPictureParameterBufferHEVC__bindgen_ty_2);
 
 impl HevcEncPicSccFields {
@@ -947,6 +964,7 @@ impl HevcEncPicSccFields {
     }
 }
 
+#[derive(Debug)]
 pub struct EncPictureParameterBufferHEVC(Box<bindings::VAEncPictureParameterBufferHEVC>);
 
 impl EncPictureParameterBufferHEVC {
@@ -1021,6 +1039,7 @@ impl EncPictureParameterBufferHEVC {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct HevcEncSliceFields(bindings::_VAEncSliceParameterBufferHEVC__bindgen_ty_1);
 
 impl HevcEncSliceFields {
@@ -1065,6 +1084,7 @@ impl HevcEncSliceFields {
     }
 }
 
+#[derive(Debug)]
 pub struct EncSliceParameterBufferHEVC(Box<bindings::VAEncSliceParameterBufferHEVC>);
 
 impl EncSliceParameterBufferHEVC {

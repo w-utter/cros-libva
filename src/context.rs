@@ -18,6 +18,7 @@ use crate::SurfaceMemoryDescriptor;
 use crate::VaError;
 
 /// A VA context for a particular [`Display`].
+#[derive(Debug)]
 pub struct Context {
     display: Rc<Display>,
     id: bindings::VAContextID,

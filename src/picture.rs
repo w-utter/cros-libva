@@ -102,6 +102,7 @@ struct PictureInner<T> {
 /// to add the generic argument of [`Surface`] to this type as well, turning it into a type with 3
 /// generics, one of which is redundant. To avoid that we leave `T` unconstrained and instead
 /// constrain the methods that require to act on it as a [`Surface`].
+#[derive(Debug)]
 pub struct Picture<S: PictureState, T> {
     inner: Box<PictureInner<T>>,
     phantom: std::marker::PhantomData<S>,

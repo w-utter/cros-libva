@@ -96,6 +96,7 @@ where
 }
 
 /// An owned VA surface that is tied to a particular `Display`.
+#[derive(Debug)]
 pub struct Surface<D: SurfaceMemoryDescriptor> {
     display: Rc<Display>,
     id: bindings::VASurfaceID,
@@ -350,6 +351,7 @@ impl<D: SurfaceMemoryDescriptor> Drop for Surface<D> {
 }
 
 /// Safe wrapper for the `object` member of `VADRMPRIMESurfaceDescriptor`.
+#[derive(Debug)]
 pub struct DrmPrimeSurfaceDescriptorObject {
     pub fd: OwnedFd,
     pub size: u32,
@@ -357,6 +359,7 @@ pub struct DrmPrimeSurfaceDescriptorObject {
 }
 
 /// Safe wrapper for the `layers` member of `VADRMPRIMESurfaceDescriptor`.
+#[derive(Debug)]
 pub struct DrmPrimeSurfaceDescriptorLayer {
     pub drm_format: u32,
     pub num_planes: u32,
@@ -366,6 +369,7 @@ pub struct DrmPrimeSurfaceDescriptorLayer {
 }
 
 /// Safe wrapper around `VADRMPRIMESurfaceDescriptor`.
+#[derive(Debug)]
 pub struct DrmPrimeSurfaceDescriptor {
     pub fourcc: u32,
     pub width: u32,

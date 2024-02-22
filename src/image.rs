@@ -15,6 +15,7 @@ use crate::VaError;
 ///
 /// An image is used to either get the surface data to client memory, or to copy image data in
 /// client memory to a surface.
+#[derive(Debug)]
 pub struct Image<'a> {
     /// The display from which the image was created, so we can unmap it upon destruction.
     display: Rc<Display>,

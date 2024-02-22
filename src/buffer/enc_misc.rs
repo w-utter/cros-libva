@@ -7,7 +7,7 @@
 use crate::bindings;
 
 #[repr(C)]
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct MiscEncParamBuffer<T> {
     hdr: bindings::VAEncMiscParameterBuffer,
     value: T,
@@ -29,7 +29,7 @@ impl<T> MiscEncParamBuffer<T> {
     }
 }
 
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct EncMiscParameterFrameRate(
     Box<MiscEncParamBuffer<bindings::VAEncMiscParameterFrameRate>>,
 );
@@ -68,7 +68,7 @@ impl EncMiscParameterFrameRate {
     }
 }
 
-#[derive(Default)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct RcFlags(bindings::_VAEncMiscParameterRateControl__bindgen_ty_1);
 
 impl RcFlags {
@@ -106,7 +106,7 @@ impl RcFlags {
     }
 }
 
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct EncMiscParameterRateControl(
     Box<MiscEncParamBuffer<bindings::VAEncMiscParameterRateControl>>,
 );
@@ -155,7 +155,7 @@ impl EncMiscParameterRateControl {
     }
 }
 
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct EncMiscParameterMaxSliceSize(
     Box<MiscEncParamBuffer<bindings::VAEncMiscParameterMaxSliceSize>>,
 );
@@ -182,7 +182,7 @@ impl EncMiscParameterMaxSliceSize {
     }
 }
 
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct EncMiscParameterBufferMaxFrameSize(
     Box<MiscEncParamBuffer<bindings::VAEncMiscParameterBufferMaxFrameSize>>,
 );
@@ -210,7 +210,7 @@ impl EncMiscParameterBufferMaxFrameSize {
     }
 }
 
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct EncMiscParameterSkipFrame(
     Box<MiscEncParamBuffer<bindings::VAEncMiscParameterSkipFrame>>,
 );
@@ -239,7 +239,7 @@ impl EncMiscParameterSkipFrame {
     }
 }
 
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct EncMiscParameterHRD(Box<MiscEncParamBuffer<bindings::VAEncMiscParameterHRD>>);
 
 impl EncMiscParameterHRD {
@@ -263,7 +263,7 @@ impl EncMiscParameterHRD {
     }
 }
 
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct EncMiscParameterBufferQualityLevel(
     Box<MiscEncParamBuffer<bindings::VAEncMiscParameterBufferQualityLevel>>,
 );
@@ -290,7 +290,7 @@ impl EncMiscParameterBufferQualityLevel {
     }
 }
 
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct EncMiscParameterQuantization(
     Box<MiscEncParamBuffer<bindings::VAEncMiscParameterQuantization>>,
 );

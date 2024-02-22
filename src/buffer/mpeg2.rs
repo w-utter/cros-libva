@@ -7,6 +7,7 @@
 use crate::bindings;
 
 /// Wrapper over the `picture_coding_extension` bindgen field in `VAPictureParameterBufferMPEG2`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct MPEG2PictureCodingExtension(bindings::_VAPictureParameterBufferMPEG2__bindgen_ty_1);
 
 impl MPEG2PictureCodingExtension {
@@ -56,6 +57,7 @@ impl MPEG2PictureCodingExtension {
 }
 
 /// Wrapper over the `PictureParameterBufferMPEG2` FFI type.
+#[derive(Debug)]
 pub struct PictureParameterBufferMPEG2(Box<bindings::VAPictureParameterBufferMPEG2>);
 
 impl PictureParameterBufferMPEG2 {

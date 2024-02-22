@@ -15,6 +15,7 @@ use crate::GenericValueError;
 use crate::VaError;
 
 /// A configuration for a given [`Display`].
+#[derive(Debug)]
 pub struct Config {
     display: Rc<Display>,
     id: bindings::VAConfigID,

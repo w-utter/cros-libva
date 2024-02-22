@@ -7,6 +7,7 @@
 use crate::bindings;
 
 /// Wrapper over the `pic_fields` bindgen field in `VAPictureParameterBufferVP8`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct VP8PicFields(bindings::_VAPictureParameterBufferVP8__bindgen_ty_1);
 
 impl VP8PicFields {
@@ -60,6 +61,7 @@ impl VP8PicFields {
 }
 
 /// Wrapper over the `VABoolCoderContextVPX` FFI type.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct BoolCoderContextVPX(bindings::VABoolCoderContextVPX);
 
 impl BoolCoderContextVPX {
@@ -74,6 +76,7 @@ impl BoolCoderContextVPX {
 }
 
 /// Wrapper over the `PictureParameterBufferVP8` FFI type.
+#[derive(Debug)]
 pub struct PictureParameterBufferVP8(Box<bindings::VAPictureParameterBufferVP8>);
 
 impl PictureParameterBufferVP8 {
@@ -137,6 +140,7 @@ impl PictureParameterBufferVP8 {
 }
 
 /// Wrapper over the `VASliceParameterBufferVP8` FFI type.
+#[derive(Debug)]
 pub struct SliceParameterBufferVP8(Box<bindings::VASliceParameterBufferVP8>);
 
 impl SliceParameterBufferVP8 {
@@ -171,6 +175,7 @@ impl SliceParameterBufferVP8 {
 }
 
 /// Wrapper over the `VAIQMatrixBufferVP8` FFI type.
+#[derive(Debug)]
 pub struct IQMatrixBufferVP8(Box<bindings::VAIQMatrixBufferVP8>);
 
 impl IQMatrixBufferVP8 {
@@ -193,6 +198,7 @@ impl IQMatrixBufferVP8 {
 }
 
 /// Wrapper over the VAProbabilityDataBufferVP8 FFI type.
+#[derive(Debug)]
 pub struct ProbabilityDataBufferVP8(Box<bindings::VAProbabilityDataBufferVP8>);
 
 impl ProbabilityDataBufferVP8 {
@@ -214,6 +220,7 @@ impl ProbabilityDataBufferVP8 {
     }
 }
 
+#[derive(Debug)]
 pub struct EncSequenceParameterBufferVP8(Box<bindings::VAEncSequenceParameterBufferVP8>);
 
 impl EncSequenceParameterBufferVP8 {
@@ -252,6 +259,7 @@ impl EncSequenceParameterBufferVP8 {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct VP8EncRefFlags(bindings::_VAEncPictureParameterBufferVP8__bindgen_ty_1);
 
 impl VP8EncRefFlags {
@@ -285,6 +293,7 @@ impl VP8EncRefFlags {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct VP8EncPicFlags(bindings::_VAEncPictureParameterBufferVP8__bindgen_ty_2);
 
 impl VP8EncPicFlags {
@@ -351,6 +360,7 @@ impl VP8EncPicFlags {
     }
 }
 
+#[derive(Debug)]
 pub struct EncPictureParameterBufferVP8(Box<bindings::VAEncPictureParameterBufferVP8>);
 
 impl EncPictureParameterBufferVP8 {
